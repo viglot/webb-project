@@ -4,16 +4,20 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const server = express()
 const indexRouter = require('./controller/index')
+const decodeIDToken = require('./config/auth')
 
-server.use(express.static('public'))
-//view engine
+
+
+//view engine 
 server.set('view engine', 'ejs')
-//server.set('layout', 'layouts/layout')
-//server.use(expressLayout)
-//server.use(cookieParser)
+server.set('layout', 'layouts/layout')
+server.use(expressLayout)
+server.use(express.urlencoded({extended:true}))
+server.use(cookieParser())
 server.use(express.static('public'))
+server.use(express.json())
+//server.use(decodeIDToken)
 server.use('/', indexRouter)
-
 
 server.listen(process.env.PORT, ()=>{
     console.log('Connected');
